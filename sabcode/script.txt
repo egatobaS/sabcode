@@ -1,0 +1,15 @@
+addc %r6, %r6, 0x2
+mulc %r7, %r6, 0x2
+div %r8, %r7, %r6
+subc %r9, %r8, 0x1
+ldc %r3, 0x2
+cmpc %r3, 0x1
+bgt 0xC
+ldc %r3, 0x1
+ret
+
+ldcs %r4, 0x40
+rd4c %r5, %r4, 0x0
+addc %r6, %r6, 0x1
+jmpc -0x14
+ret
