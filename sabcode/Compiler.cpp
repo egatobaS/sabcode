@@ -1,5 +1,13 @@
 #include "main.h"
 
+template <typename I> std::string n2hexstr(I w, size_t hex_len = sizeof(I) << 1) {
+	static const char* digits = "0123456789ABCDEF";
+	std::string rc(hex_len, '0');
+	for (size_t i = 0, j = (hex_len - 1) * 4; i < hex_len; ++i, j -= 4)
+		rc[i] = digits[(w >> j) & 0x0f];
+	return rc;
+}
+
 int getIntFromBits(bool* bits, int len)
 {
 	int Value = 0;
@@ -474,7 +482,7 @@ std::vector<unsigned int> Compile(std::vector< InstructionStruture>  instStack)
 
 				bool isHex = replaceText(instStack[i].values[0], "0x", "");
 
-				unsigned int compiled_inst = inst_compile(inst_cbranch, isHex ? (unsigned short)std::stol(instStack[i].values[0], nullptr, 16) : (unsigned short)atoi(instStack[i].values[0].c_str()), (unsigned char)atoi(instStack[i].operands[0].c_str()),  (unsigned char)inst_branch_dictionary[dictionaryId].opcd);
+				unsigned int compiled_inst = inst_compile(inst_cbranch, isHex ? (unsigned short)std::stol(instStack[i].values[0], nullptr, 16) : (unsigned short)atoi(instStack[i].values[0].c_str()), (unsigned char)atoi(instStack[i].operands[0].c_str()), (unsigned char)inst_branch_dictionary[dictionaryId].opcd);
 
 				rawOpcodes.push_back(compiled_inst);
 			}
@@ -577,4 +585,156 @@ std::vector<unsigned int> Compile(std::vector< InstructionStruture>  instStack)
 
 	return rawOpcodes;
 }
+
+std::vector<parsediInstructionInfo> checkInstruction(std::vector< InstructionStruture> instStack)
+{
+	std::vector<parsediInstructionInfo> branchInfo;
+
+	int CurrentPos = 0;
+
+	std::vector<unsigned int> rawOpcodes;
+
+	for (size_t i = 0; i < instStack.size(); i++)
+	{
+		bool branch_found = false;
+		bool inst_found = false;
+
+		int dictionaryId = 0;
+
+		for (int e = 0; e < 49; e++)
+		{
+			if (inst_dictionary[e].inst == instStack[i].instruction)
+			{
+				inst_found = true;
+				dictionaryId = e;
+				break;
+			}
+		}
+
+		for (int e = 0; e < 12; e++)
+		{
+			if (inst_branch_dictionary[e].inst == instStack[i].instruction) {
+				branch_found = true;
+				dictionaryId = e;
+				break;
+			}
+		}
+
+		if (branch_found)
+		{
+			if ((instStack[i].operands.size() == 0 && instStack[i].values.size() == 1) || (instStack[i].operands.size() == 1 && instStack[i].values.size() == 1))
+			{
+				parsediInstructionInfo info;
+
+				int LocalCurrentPos = CurrentPos * 4;
+
+				if (i && instStack[i - 1].textInstruction.find(":") != -1) {
+
+					CurrentPos--;
+
+					info.branchName = instStack[i - 1].textInstruction.substr(0, instStack[i - 1].textInstruction.size() - 1);
+
+					LocalCurrentPos = LocalCurrentPos - 4;
+
+					info.postion = LocalCurrentPos;
+
+					info.branchFound = true;
+				}
+				else info.branchFound = false;
+
+				info.Instruction = instStack[i];
+
+				info.CurrentLinePos = LocalCurrentPos;
+
+				branchInfo.push_back(info);
+
+				CurrentPos++;
+			}
+			else
+				printf("instruction not implemented yet [%s]\n", instStack[i].textInstruction.c_str());
+		}
+		else if (inst_found)
+		{
+		
+			if ((instStack[i].operands.size() == 0 && instStack[i].values.size() == 1) || (instStack[i].operands.size() == 0 && instStack[i].values.size() == 0) || 
+				(instStack[i].operands.size() == 1 && instStack[i].values.size() == 0) || (instStack[i].operands.size() == 1 && instStack[i].values.size() == 1) || 
+				(instStack[i].operands.size() == 2 && instStack[i].values.size() == 1) || (instStack[i].operands.size() == 2 && instStack[i].values.size() == 0) || 
+				(instStack[i].operands.size() == 3 && instStack[i].values.size() == 0))
+			{
+				parsediInstructionInfo info;
+
+				int LocalCurrentPos = CurrentPos * 4;
+
+				if (i && instStack[i - 1].textInstruction.find(":") != -1) {
+
+					CurrentPos--;
+
+					info.branchName = instStack[i - 1].textInstruction.substr(0, instStack[i - 1].textInstruction.size() - 1);
+
+					LocalCurrentPos = LocalCurrentPos - 4;
+
+					info.postion = LocalCurrentPos;
+
+					info.branchFound = true;
+				}
+				else info.branchFound = false;
+
+				info.Instruction = instStack[i];
+
+				info.CurrentLinePos = LocalCurrentPos;
+
+				branchInfo.push_back(info);
+				CurrentPos++;
+			}
+			else
+				printf("instruction not implemented yet [%s]\n", instStack[i].textInstruction.c_str());
+		}
+		else if (instStack[i].textInstruction.find(":") != -1)
+		{
+			std::string branchName = instStack[i].textInstruction.substr(0, instStack[i].textInstruction.size() - 1);
+
+			bool isReferenced = false;
+			
+			for (size_t e = 0; e < instStack.size(); e++)
+			{
+				if (instStack[e].values.size() > 0 && instStack[e].values[0] == branchName)
+					isReferenced = true;
+			}
+			
+			if (isReferenced)
+				CurrentPos++;
+		}
+		else
+			printf("unsupported instruction found File Line: %s opcode: %s numof Operands: %i numof values: %i\n", instStack[i].textInstruction.c_str(), instStack[i].instruction.c_str(), (unsigned int)instStack[i].operands.size(), (unsigned int)instStack[i].values.size());
+	}
+
+	for (size_t i = 0; i < branchInfo.size(); i++)
+	{
+		if (branchInfo[i].Instruction.values.size() > 0)
+		{
+			if (branchInfo[i].Instruction.instruction == "jmpc" || branchInfo[i].Instruction.instruction == "callc" || branchInfo[i].Instruction.instruction == "beq" ||
+				branchInfo[i].Instruction.instruction == "bne" || branchInfo[i].Instruction.instruction == "bgt" || branchInfo[i].Instruction.instruction == "blt" ||
+				branchInfo[i].Instruction.instruction == "ble" || branchInfo[i].Instruction.instruction == "bge")
+			{
+				for (size_t e = 0; e < branchInfo.size(); e++)
+				{
+					if (branchInfo[e].branchFound && branchInfo[e].branchName == branchInfo[i].Instruction.values[0])
+					{
+						size_t index;
+
+						int branchLength = (branchInfo[e].postion - branchInfo[i].CurrentLinePos);
+
+						while ((index = branchInfo[i].Instruction.textInstruction.find(branchInfo[e].branchName)) != std::string::npos)
+							branchInfo[i].Instruction.textInstruction.replace(index, branchInfo[e].branchName.size(), std::to_string(branchLength));
+
+						while ((index = branchInfo[i].Instruction.values[0].find(branchInfo[e].branchName)) != std::string::npos)
+							branchInfo[i].Instruction.values[0].replace(index, branchInfo[e].branchName.size(), std::to_string(branchLength));
+					}
+				}
+			}
+		}
+	}
+	return branchInfo;
+}
+
 

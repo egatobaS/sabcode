@@ -8,10 +8,17 @@ int main()
 
 	Instruction* parser = new Instruction();
 
-	std::vector< InstructionStruture> instStack = parseAssemblyFile("script.txt");
+	std::vector< InstructionStruture> RawinstStack = parseAssemblyFile("script.txt");
 
-	std::vector<unsigned int> rawOpcodes = Compile(instStack);
+	std::vector<parsediInstructionInfo> Processedinsts = checkInstruction(RawinstStack);
 
+	std::vector< InstructionStruture> FinalinstStack;
+
+	for (size_t i = 0; i < Processedinsts.size(); i++)
+		FinalinstStack.push_back(Processedinsts[i].Instruction);
+
+	std::vector<unsigned int> rawOpcodes = Compile(FinalinstStack);
+	
 	for (ip = 0; ip < rawOpcodes.size();)
 	{
 		if (exec_vm(parser, rawOpcodes[(unsigned int)ip], &ip) == PROGRAM_EXIT)

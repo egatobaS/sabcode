@@ -1,12 +1,34 @@
-ldcs %r3, 0x8222
-ldc %r5, 0xFFFF
-srwc %r5, %r5, 32
-and %r3, %r3, %r5
-orc %r3, %r3, 0x4A28
-jmpc
-nop
-nop
-nop
-branch:
+jmpc main
+ret
+
+loc_4:
+ldc %r8, 0x6
+ret
+
+loc_2:
+ldc %r6, 0x4
+ret
+
+
+main:
+ldc %r3, 0x1
+callc loc_0
+callc loc_1
+callc loc_2
+jmpc loc_3
+ret
+
+loc_0:
+ldc %r4, 0x2
+ret
+
+
+loc_1:
+ldc %r5, 0x3
+ret
+
+loc_3:
+ldc %r7, 0x5
+callc loc_4
 ret
 

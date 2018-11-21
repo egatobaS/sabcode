@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include <iomanip>
 
 #include "Arithmetic.h"
 #include "Utils.h"

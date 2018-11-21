@@ -584,6 +584,7 @@ interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long 
 	{
 		signed short h = parser->getRegister622();
 		*pos = (*pos) + (h / 0x4);
+
 		break;
 	}
 	case inst_ccmp:
@@ -612,7 +613,7 @@ interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long 
 	case inst_callc:
 	{
 		pushLr(*pos + 1);
-		signed short NewPostion = (((signed short)parser->getRegister622()) + ((signed short)*pos * 0x4)) / 0x4;
+		signed short NewPostion = (((signed short)parser->getRegister622()) + (((signed short)*pos) * 0x4)) / 0x4;
 		*pos = NewPostion;
 		break;
 	}

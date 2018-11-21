@@ -1,6 +1,6 @@
 #include "main.h"
 
-const char* illegal_chars = "!@#$^&*()_+=[]\'.{}|:\"<>?`~";
+const char* illegal_chars = "!@#$^&*()+=[]\'.{}|\"<>?`~";
 
 void splitInstruction(InstructionStruture* instStack, const std::string& str, const std::string& delim)
 {
