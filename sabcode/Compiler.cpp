@@ -435,7 +435,7 @@ std::vector<unsigned int> Compile(std::vector< InstructionStruture>  instStack)
 
 		int dictionaryId = 0;
 
-		for (int e = 0; e < 46; e++)
+		for (int e = 0; e < 47; e++)
 		{
 			if (inst_dictionary[e].inst == instStack[i].instruction)
 			{

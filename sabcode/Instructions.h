@@ -50,6 +50,7 @@ enum inst_opcodes
 	inst_call = 45,
 	inst_callc = 46,
 	inst_cbranch = 47,
+	inst_syscall = 48
 };
 
 enum inst_branchopcodes
@@ -146,5 +147,5 @@ private:
 };
 
 
-extern instruct_finder inst_dictionary[46];
+extern instruct_finder inst_dictionary[47];
 extern instruct_branch_finder inst_branch_dictionary[12];

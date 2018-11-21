@@ -391,6 +391,12 @@ void exec_cbgt(cr* crReg, unsigned long long value, unsigned long long* pos)
 		*pos = *pos + 1;
 }
 
+void exec_syscall(unsigned long long* ra)
+{
+	unsigned long long(*function)(...) = (unsigned long long(*)(...))*ra;
+	r[3] = function(r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10]);
+}
+
 interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long long * pos)
 {
 	interrupts intp = PROGRAM_INST_EXEC;
@@ -646,6 +652,11 @@ interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long 
 		}
 		break;
 	}
+	case inst_syscall:
+		exec_syscall(&r[parser->getRegister611()]);
+		*pos = *pos + 1;
+		break;
+
 	default:
 		printf("unsupported Instruction: %i\n", codes);
 		*pos = *pos + 1;
