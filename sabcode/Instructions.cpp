@@ -1,6 +1,6 @@
 #include "main.h"
 
-instruct_finder inst_dictionary[47] = { "lds", inst_lds,
+instruct_finder inst_dictionary[49] = { "lds", inst_lds,
 "ldcs", inst_ldcs,
 "ld", inst_ld,
 "ldc", inst_ldc,
@@ -46,7 +46,9 @@ instruct_finder inst_dictionary[47] = { "lds", inst_lds,
 "cmpc", inst_cmpc,
 "call", inst_call,
 "callc", inst_callc,
-"syscall", inst_syscall};
+"syscall", inst_syscall,
+"slwc", inst_slwc,
+"srwc", inst_srwc };
 
 instruct_branch_finder inst_branch_dictionary[12] = {
 	"beq", inst_beq,

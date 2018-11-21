@@ -1,8 +1,12 @@
-ldc %r3, 0x8
-call %r3
+ldcs %r3, 0x8222
+ldc %r5, 0xFFFF
+srwc %r5, %r5, 32
+and %r3, %r3, %r5
+orc %r3, %r3, 0x4A28
+jmpc
+nop
+nop
+nop
+branch:
 ret
 
-ldcs %r4, 0x40
-rd8c %r5, %r4, 0x0
-addc %r6, %r6, 0x1
-ret

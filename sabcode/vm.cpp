@@ -393,8 +393,19 @@ void exec_cbgt(cr* crReg, unsigned long long value, unsigned long long* pos)
 
 void exec_syscall(unsigned long long* ra)
 {
-	unsigned long long(*function)(...) = (unsigned long long(*)(...))*ra;
+	int calladdr = (int)*ra;
+	unsigned long long(*function)(...) = (unsigned long long(*)(...))calladdr;
 	r[3] = function(r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10]);
+}
+
+void exec_slwc(unsigned long long* ra, unsigned long long* rb, unsigned long long value)
+{
+	*ra = (*rb << value);
+}
+
+void exec_srwc(unsigned long long* ra, unsigned long long* rb, unsigned long long value)
+{
+	*ra = (*rb >> value);
 }
 
 interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long long * pos)
@@ -654,6 +665,14 @@ interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long 
 	}
 	case inst_syscall:
 		exec_syscall(&r[parser->getRegister611()]);
+		*pos = *pos + 1;
+		break;
+	case inst_slwc:
+		exec_slwc(&r[parser->getRegister611()], &r[parser->getRegister1116()], parser->getValue1632());
+		*pos = *pos + 1;
+		break;
+	case inst_srwc:
+		exec_srwc(&r[parser->getRegister611()], &r[parser->getRegister1116()], parser->getValue1632());
 		*pos = *pos + 1;
 		break;
 
