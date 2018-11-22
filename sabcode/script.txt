@@ -9,13 +9,15 @@ loc_2:
 ldc %r6, 0x4
 ret
 
-
 main:
 ldc %r3, 0x1
+cmpc %r3, 0x1
+bne end
 callc loc_0
 callc loc_1
 callc loc_2
 jmpc loc_3
+end:
 ret
 
 loc_0:

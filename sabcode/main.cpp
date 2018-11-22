@@ -18,7 +18,7 @@ int main()
 		FinalinstStack.push_back(Processedinsts[i].Instruction);
 
 	std::vector<unsigned int> rawOpcodes = Compile(FinalinstStack);
-	
+
 	for (ip = 0; ip < rawOpcodes.size();)
 	{
 		if (exec_vm(parser, rawOpcodes[(unsigned int)ip], &ip) == PROGRAM_EXIT)

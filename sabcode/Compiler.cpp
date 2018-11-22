@@ -620,40 +620,7 @@ std::vector<parsediInstructionInfo> checkInstruction(std::vector< InstructionStr
 			}
 		}
 
-		if (branch_found)
-		{
-			if ((instStack[i].operands.size() == 0 && instStack[i].values.size() == 1) || (instStack[i].operands.size() == 1 && instStack[i].values.size() == 1))
-			{
-				parsediInstructionInfo info;
-
-				int LocalCurrentPos = CurrentPos * 4;
-
-				if (i && instStack[i - 1].textInstruction.find(":") != -1) {
-
-					CurrentPos--;
-
-					info.branchName = instStack[i - 1].textInstruction.substr(0, instStack[i - 1].textInstruction.size() - 1);
-
-					LocalCurrentPos = LocalCurrentPos - 4;
-
-					info.postion = LocalCurrentPos;
-
-					info.branchFound = true;
-				}
-				else info.branchFound = false;
-
-				info.Instruction = instStack[i];
-
-				info.CurrentLinePos = LocalCurrentPos;
-
-				branchInfo.push_back(info);
-
-				CurrentPos++;
-			}
-			else
-				printf("instruction not implemented yet [%s]\n", instStack[i].textInstruction.c_str());
-		}
-		else if (inst_found)
+		 if (branch_found || inst_found)
 		{
 		
 			if ((instStack[i].operands.size() == 0 && instStack[i].values.size() == 1) || (instStack[i].operands.size() == 0 && instStack[i].values.size() == 0) || 
