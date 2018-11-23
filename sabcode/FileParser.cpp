@@ -57,9 +57,9 @@ bool replaceText(std::string & token, std::string replace, std::string replaceme
 
 int dosLineContainillegalChar(std::string line) {
 
-	int icLenght = strlen(illegal_chars);
+	size_t icLenght = strlen(illegal_chars);
 
-	for (int i = 0; i < icLenght; i++) {
+	for (size_t i = 0; i < icLenght; i++) {
 
 		if (line.find(illegal_chars[i]) != -1)
 			return illegal_chars[i];

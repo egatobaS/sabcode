@@ -16,4 +16,7 @@
 #include "Compiler.h"
 #include "vm.h"
 
-int main();
+#define MAJOR_SABCODE_VERSION 0
+#define MINOR_SABCODE_VERSION 1
+
+int main(int argc, char *argv[]);
