@@ -19,4 +19,17 @@
 #define MAJOR_SABCODE_VERSION 0
 #define MINOR_SABCODE_VERSION 1
 
+struct RunInfo
+{
+	bool InputFileGiven;
+	bool OutputFileGiven;
+	std::string OutFilePath;
+	std::string InFilePath;
+	bool RunCode;
+	bool DisplayRegisters;
+	bool ExecuteFile;
+	std::string InExecutePath;
+};
+
+
 int main(int argc, char *argv[]);
