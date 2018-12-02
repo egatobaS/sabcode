@@ -95,7 +95,7 @@ inst_opcodes Instruction::getInstructionType()
 }
 
 
-signed int Instruction::getRegister611()
+ int Instruction::getRegister611()
 {
 	return  getValueFromBits(6, 11);
 }

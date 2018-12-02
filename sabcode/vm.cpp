@@ -73,6 +73,7 @@ void exec_mulc(unsigned long long* ra, unsigned long long* rb, unsigned long lon
 
 void exec_sub(unsigned long long* ra, unsigned long long* rb, unsigned long long* rc)
 {
+
 	*ra = *rb - *rc;
 }
 
@@ -439,7 +440,7 @@ interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long 
 		*pos = *pos + 1;
 		break;
 	case inst_addc:
-		exec_addc(&r[parser->getRegister611()], &r[parser->getRegister1116()], parser->getValue1632());
+		exec_addc(&r[parser->getRegister611()], &r[parser->getRegister1116()], (unsigned short)parser->getValue1632());
 		*pos = *pos + 1;
 		break;
 	case inst_div:
@@ -447,7 +448,7 @@ interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long 
 		*pos = *pos + 1;
 		break;
 	case inst_divc:
-		exec_divc(&r[parser->getRegister611()], &r[parser->getRegister1116()], parser->getValue1632());
+		exec_divc(&r[parser->getRegister611()], &r[parser->getRegister1116()], (unsigned short)parser->getValue1632());
 		*pos = *pos + 1;
 		break;
 	case inst_mul:
@@ -455,7 +456,7 @@ interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long 
 		*pos = *pos + 1;
 		break;
 	case inst_mulc:
-		exec_mulc(&r[parser->getRegister611()], &r[parser->getRegister1116()], parser->getValue1632());
+		exec_mulc(&r[parser->getRegister611()], &r[parser->getRegister1116()], (unsigned short)parser->getValue1632());
 		*pos = *pos + 1;
 		break;
 	case inst_sub:
@@ -463,7 +464,7 @@ interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long 
 		*pos = *pos + 1;
 		break;
 	case inst_subc:
-		exec_subc(&r[parser->getRegister611()], &r[parser->getRegister1116()], parser->getValue1632());
+		exec_subc(&r[parser->getRegister611()], &r[parser->getRegister1116()], (unsigned short)parser->getValue1632());
 		*pos = *pos + 1;
 		break;
 	case inst_or:
@@ -471,7 +472,7 @@ interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long 
 		*pos = *pos + 1;
 		break;
 	case inst_orc:
-		exec_orc(&r[parser->getRegister611()], &r[parser->getRegister1116()], parser->getValue1632());
+		exec_orc(&r[parser->getRegister611()], &r[parser->getRegister1116()], (unsigned short )parser->getValue1632());
 		*pos = *pos + 1;
 		break;
 	case inst_and:
@@ -479,7 +480,7 @@ interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long 
 		*pos = *pos + 1;
 		break;
 	case inst_andc:
-		exec_andc(&r[parser->getRegister611()], &r[parser->getRegister1116()], parser->getValue1632());
+		exec_andc(&r[parser->getRegister611()], &r[parser->getRegister1116()], (unsigned short)parser->getValue1632());
 		*pos = *pos + 1;
 		break;
 	case inst_not:
@@ -487,7 +488,7 @@ interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long 
 		*pos = *pos + 1;
 		break;
 	case inst_notc:
-		exec_notc(&r[parser->getRegister611()], parser->getValue1632());
+		exec_notc(&r[parser->getRegister611()], (unsigned short)parser->getValue1632());
 		*pos = *pos + 1;
 		break;
 	case inst_xor:
@@ -495,7 +496,7 @@ interrupts exec_vm(Instruction* parser, unsigned int instruction, unsigned long 
 		*pos = *pos + 1;
 		break;
 	case inst_xorc:
-		exec_xorc(&r[parser->getRegister611()], &r[parser->getRegister1116()], parser->getValue1632());
+		exec_xorc(&r[parser->getRegister611()], &r[parser->getRegister1116()], (unsigned short)parser->getValue1632());
 		*pos = *pos + 1;
 		break;
 	case inst_st8c:

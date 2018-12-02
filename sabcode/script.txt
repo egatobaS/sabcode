@@ -10,8 +10,8 @@ ldc %r6, 0x4
 ret
 
 main:
-ldc %r3, 0x1
-cmpc %r3, 0x1
+ldc %r3, 1
+cmpc %r3, 1
 bne end
 callc loc_0
 callc loc_1
@@ -33,4 +33,3 @@ loc_3:
 ldc %r7, 0x5
 callc loc_4
 ret
-
