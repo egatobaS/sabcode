@@ -394,7 +394,7 @@ void exec_cbgt(cr* crReg, unsigned long long value, unsigned long long* pos)
 
 void exec_syscall(unsigned long long* ra)
 {
-	int calladdr = (int)*ra;
+	void* calladdr = (void*)*ra;
 	unsigned long long(*function)(...) = (unsigned long long(*)(...))calladdr;
 	r[3] = function(r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10]);
 }

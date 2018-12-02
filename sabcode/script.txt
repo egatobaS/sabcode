@@ -30,6 +30,8 @@ ldc %r5, 0x3
 ret
 
 loc_3:
+ldcs %r4, 0x8202
+orc %r4, %r4, 0xDCB0
 ldc %r7, 0x5
 callc loc_4
 ret
